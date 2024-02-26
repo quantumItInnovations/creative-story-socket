@@ -30,9 +30,9 @@ io.on("connection", (socket) => {
       io.to(id).emit("loginSuccessfully", { message: "Welcome User", id });
       users[socket.id] = id;
       console.log(users);
-    } catch (err) {
-      console.log(err);
-      io.to(socket.id).emit("error", err);
+    } catch (error) {
+      console.log(error);
+      io.to(socket.id).emit("error", error);
     }
   });
 
@@ -51,7 +51,9 @@ io.on("connection", (socket) => {
         }
         io.to(user["_id"]).emit("storyInvitation", { data });
       }
-    } catch (error) {}
+    } catch (error) {
+      io.to(socket.id).emit("error", error);
+    }
   });
 
   socket.on("joinRoom", async (data) => {
@@ -60,7 +62,9 @@ io.on("connection", (socket) => {
         console.log(room);
         socket.join(room);
       }
-    } catch (error) {}
+    } catch (error) {
+      io.to(socket.id).emit("error", error);
+    }
   });
 
   socket.on("addParticipants", async (data) => {
@@ -68,13 +72,17 @@ io.on("connection", (socket) => {
       for (let user of data["participants"]) {
         io.to(user["_id"]).emit("storyInvitation", { data });
       }
-    } catch (error) {}
+    } catch (error) {
+      io.to(socket.id).emit("error", error);
+    }
   });
 
   socket.on("removeParticipants", async (data) => {
     try {
       io.to(data["participant"]).emit("removeInvitation", { data });
-    } catch (error) {}
+    } catch (error) {
+      io.to(socket.id).emit("error", error);
+    }
   });
 
   socket.on("acceptInvitation", async (data) => {
@@ -85,6 +93,7 @@ io.on("connection", (socket) => {
       console.log(io.sockets.adapter.rooms.has(roomId));
       io.to(data["roomId"]).emit("invitationAccepted", { roomId });
     } catch (error) {
+      io.to(socket.id).emit("error", error);
       console.log("error in invitaion accept emit: ", error);
     }
   });
@@ -95,7 +104,7 @@ io.on("connection", (socket) => {
     try {
       io.to(data["roomId"]).emit("invitationRejected", { roomId });
     } catch (error) {
-      io.to(socket.id).emit("error", err);
+      io.to(socket.id).emit("error", error);
     }
   });
 
@@ -103,7 +112,9 @@ io.on("connection", (socket) => {
     const roomId = data["roomId"];
     try {
       io.to(data["roomId"]).emit("storyStarted", { roomId });
-    } catch (error) {}
+    } catch (error) {
+      io.to(socket.id).emit("error", error);
+    }
   });
 
   socket.on("sendMessage", async (data) => {
@@ -111,14 +122,18 @@ io.on("connection", (socket) => {
     const roomId = data["roomId"];
     try {
       io.to(roomId).emit("messageSend", { roomId });
-    } catch (error) {}
+    } catch (error) {
+      io.to(socket.id).emit("error", error);
+    }
   });
 
   socket.on("escapeTurn", async (data) => {
     const roomId = data["roomId"];
     try {
       io.to(roomId).emit("turnIsEscaped", { roomId });
-    } catch (error) {}
+    } catch (error) {
+      io.to(socket.id).emit("error", error);
+    }
   });
 });
 
