@@ -117,6 +117,15 @@ io.on("connection", (socket) => {
     }
   });
 
+  socket.on("endStory", async (data) => {
+    const roomId = data["roomId"];
+    try {
+      io.to(data["roomId"]).emit("storyEnded", { roomId });
+    } catch (error) {
+      io.to(socket.id).emit("error", error);
+    }
+  });
+
   socket.on("sendMessage", async (data) => {
     console.log("user send a messge in room: ", data["roomId"]);
     const roomId = data["roomId"];
