@@ -18,7 +18,7 @@ const io = new Server(server, {
 const dotenv = require("dotenv");
 dotenv.config({ path: "./config.env" });
 
-const port = process.env.PORT;
+const port = process.env.PORT || 4000;
 const users = {};
 const rooms = {};
 
