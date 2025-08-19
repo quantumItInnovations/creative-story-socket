@@ -29,7 +29,7 @@ io.on("connection", (socket) => {
       socket.join(id); //personal message
       io.to(id).emit("loginSuccessfully", { message: "Welcome User", id });
       users[socket.id] = id;
-      console.log(users);
+      // console.log(users);
     } catch (error) {
       console.log(error);
       io.to(socket.id).emit("error", error);
@@ -41,8 +41,8 @@ io.on("connection", (socket) => {
     rooms[socket.id] = [];
     rooms[socket.id].push(data["roomId"]);
     socket.join(data["roomId"]);
-    console.log(data["hostname"]);
-    console.log("user created room id: ", data["roomId"]);
+    // console.log(data["hostname"]);
+    // console.log("user created room id: ", data["roomId"]);
     try {
       for (let user of data["participants"]) {
         if (i == 0) {
@@ -87,10 +87,10 @@ io.on("connection", (socket) => {
 
   socket.on("acceptInvitation", async (data) => {
     const roomId = data["roomId"];
-    console.log("user acceptInvitation room id: ", data["roomId"]);
+    // console.log("user acceptInvitation room id: ", data["roomId"]);
     socket.join(data["roomId"]);
     try {
-      console.log(io.sockets.adapter.rooms.has(roomId));
+      // console.log(io.sockets.adapter.rooms.has(roomId));
       io.to(data["roomId"]).emit("invitationAccepted", { roomId });
     } catch (error) {
       io.to(socket.id).emit("error", error);
@@ -100,7 +100,7 @@ io.on("connection", (socket) => {
 
   socket.on("rejectInvitation", async (data) => {
     const roomId = data["roomId"];
-    console.log("user rejectInvitation room id: ", data["roomId"]);
+    // console.log("user rejectInvitation room id: ", data["roomId"]);
     try {
       io.to(data["roomId"]).emit("invitationRejected", { roomId });
     } catch (error) {
@@ -127,7 +127,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("sendMessage", async (data) => {
-    console.log("user send a messge in room: ", data["roomId"]);
+    // console.log("user send a messge in room: ", data["roomId"]);
     const roomId = data["roomId"];
     try {
       io.to(roomId).emit("messageSend", { roomId });
