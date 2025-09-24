@@ -136,6 +136,17 @@ io.on("connection", (socket) => {
     }
   });
 
+  socket.on("editMessage", async (data) => {
+    const roomId = data["roomId"];
+    try {
+      io.to(roomId).emit("messageEdited", {
+        roomId,
+      });
+    } catch (error) {
+      io.to(socket.id).emit("error", error);
+    }
+  });
+
   socket.on("escapeTurn", async (data) => {
     const roomId = data["roomId"];
     try {
