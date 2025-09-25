@@ -137,10 +137,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("editMessage", async (data) => {
-    console.log("Edit message Data", data);
-
     const roomId = data["roomId"];
-    console.log("Edit message room Id", roomId);
     try {
       io.to(roomId).emit("messageEdited", {
         roomId,
