@@ -127,7 +127,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("sendMessage", async (data) => {
-    // console.log("user send a messge in room: ", data["roomId"]);
+    // console.log("user send a messge in room:", data["roomId"]);
     const roomId = data["roomId"];
     try {
       io.to(roomId).emit("messageSend", { roomId });
